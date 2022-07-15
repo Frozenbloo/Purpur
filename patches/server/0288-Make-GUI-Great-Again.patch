@@ -17,7 +17,7 @@ index 76e605a26ab146afc7ac10a64afa7e1fd001410b..bd5b4a2c399f8e04a26bdb277c666e8e
                  /*
                  jline.console.ConsoleReader bufferedreader = reader;
 diff --git a/src/main/java/net/minecraft/server/gui/MinecraftServerGui.java b/src/main/java/net/minecraft/server/gui/MinecraftServerGui.java
-index c07918aa1ed2469ad7a76a0add60ab648ff7f421..28a21b90663b366fcebb5e416dd9603481040bd7 100644
+index c07918aa1ed2469ad7a76a0add60ab648ff7f421..34bcc9b00b31871e290585ee36f35bd20a75cd0d 100644
 --- a/src/main/java/net/minecraft/server/gui/MinecraftServerGui.java
 +++ b/src/main/java/net/minecraft/server/gui/MinecraftServerGui.java
 @@ -31,6 +31,7 @@ import javax.swing.text.BadLocationException;
@@ -76,7 +76,15 @@ index c07918aa1ed2469ad7a76a0add60ab648ff7f421..28a21b90663b366fcebb5e416dd96034
          JScrollPane jscrollpane = new JScrollPane(jtextarea, 22, 30);
  
          jtextarea.setEditable(false);
-@@ -141,6 +147,35 @@ public class MinecraftServerGui extends JComponent {
+@@ -137,10 +143,43 @@ public class MinecraftServerGui extends JComponent {
+ 
+             if (!s.isEmpty()) {
+                 this.server.handleConsoleInput(s, this.server.createCommandSourceStack());
++                // Purpur start
++                history.add(s);
++                historyIndex = -1;
++                // Purpur end
+             }
  
              jtextfield.setText("");
          });
@@ -112,7 +120,7 @@ index c07918aa1ed2469ad7a76a0add60ab648ff7f421..28a21b90663b366fcebb5e416dd96034
          jtextarea.addFocusListener(new FocusAdapter() {
              public void focusGained(FocusEvent focusevent) {}
          });
-@@ -176,7 +211,7 @@ public class MinecraftServerGui extends JComponent {
+@@ -176,7 +215,7 @@ public class MinecraftServerGui extends JComponent {
      }
  
      private static final java.util.regex.Pattern ANSI = java.util.regex.Pattern.compile("\\x1B\\[([0-9]{1,2}(;[0-9]{1,2})*)?[m|K]"); // CraftBukkit
@@ -121,7 +129,7 @@ index c07918aa1ed2469ad7a76a0add60ab648ff7f421..28a21b90663b366fcebb5e416dd96034
          if (!SwingUtilities.isEventDispatchThread()) {
              SwingUtilities.invokeLater(() -> {
                  this.print(textArea, scrollPane, message);
-@@ -190,11 +225,7 @@ public class MinecraftServerGui extends JComponent {
+@@ -190,11 +229,7 @@ public class MinecraftServerGui extends JComponent {
                  flag = (double) jscrollbar.getValue() + jscrollbar.getSize().getHeight() + (double) (MinecraftServerGui.MONOSPACED.getSize() * 4) > (double) jscrollbar.getMaximum();
              }
  
@@ -134,7 +142,7 @@ index c07918aa1ed2469ad7a76a0add60ab648ff7f421..28a21b90663b366fcebb5e416dd96034
  
              if (flag) {
                  jscrollbar.setValue(Integer.MAX_VALUE);
-@@ -202,4 +233,16 @@ public class MinecraftServerGui extends JComponent {
+@@ -202,4 +237,16 @@ public class MinecraftServerGui extends JComponent {
  
          }
      }
